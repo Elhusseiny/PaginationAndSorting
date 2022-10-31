@@ -19,6 +19,7 @@ public class JpaSpecificationApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         //userService.getAllUsers();
-        userService.getUsers();
+        //userService.getUsers();
+        userService.getUsersDTOs();
     }
 }

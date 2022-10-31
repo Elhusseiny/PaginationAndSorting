@@ -1,8 +1,11 @@
 package com.hussain.demo.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hussain.demo.dto.UserResponseDTO;
 import com.hussain.demo.model.ERole;
 import com.hussain.demo.model.User;
 import com.hussain.demo.repository.UserRepository;
+import com.hussain.demo.utils.Mapper;
 import com.hussain.demo.utils.UserSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +24,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserService {
 
+
     private final UserRepository userRepository;
+
+    private final Mapper mapper ;
 
     @Transactional
     public Page<User> getAllUsers() {
@@ -43,6 +49,19 @@ public class UserService {
         Page<User> usersList = userRepository.findAll(userSpecification , pageable);
         usersList.forEach(System.out::println);
         return usersList;
+    }
+
+    @Transactional
+    public Page<UserResponseDTO> getUsersDTOs() {
+        Pageable pageable = PageRequest.of(0, 3, Sort.by("roles_name").descending());
+        String username = "huss";
+        Map<String, Object> searchParams = new HashMap<>();
+        searchParams.put("username", username);
+        searchParams.put("role" , ERole.ROLE_USER );
+        Specification<User> userSpecification = getUserSpecification(searchParams);
+        Page<UserResponseDTO> usersDtoList = userRepository.findAll(userSpecification , pageable).map(mapper::toUserResponse);
+
+        return usersDtoList;
     }
 
     private Specification<User> getUserSpecification(Map<String, Object> searchParams) {

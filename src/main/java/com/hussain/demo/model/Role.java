@@ -1,7 +1,10 @@
 package com.hussain.demo.model;
 
+import lombok.ToString;
+
 import javax.persistence.*;
 
+@ToString
 @Entity
 @Table(name = "roles")
 public class Role {
