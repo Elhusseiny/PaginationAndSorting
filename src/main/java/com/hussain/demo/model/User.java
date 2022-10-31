@@ -1,6 +1,7 @@
 package com.hussain.demo.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -10,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+@ToString
 @Data
 @Entity
 @Table(	name = "users",
