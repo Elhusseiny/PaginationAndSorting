@@ -1,19 +1,20 @@
 package com.hussain.demo.utils;
 
+import com.hussain.demo.model.Role;
 import com.hussain.demo.model.User;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class UserSpecification implements Specification <User> {
 
-    private String username ;
-    public UserSpecification(String username) {
+    Map<String , Object > searchParams ;
+    public UserSpecification(Map<String , Object > searchParams) {
         super();
-        this.username = username ;
+        this.searchParams = searchParams;
     }
 
     @Override
@@ -26,8 +27,19 @@ public class UserSpecification implements Specification <User> {
         return Specification.super.or(other);
     }
 
-    @Override //here
+    @Override
     public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        return cb.like(root.get("username"), username);
+        List<Predicate> predicateList = new ArrayList<>();
+
+        Join<User , Role> userWithRolesJoin =  root.join(("roles")) ;
+
+        if (searchParams.get("username") != null)
+            predicateList.add(cb.equal(root.get("username"), searchParams.get("username").toString()));
+        if (searchParams.get("email") != null)
+            predicateList.add(cb.equal(root.get("email"), searchParams.get("email")));
+        if (searchParams.get("role") != null)
+            predicateList.add(cb.equal(userWithRolesJoin.get("name") , searchParams.get("role")));
+
+        return cb.and(predicateList.toArray(new Predicate[0]));
     }
 }

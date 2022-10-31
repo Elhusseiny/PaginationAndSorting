@@ -1,5 +1,6 @@
 package com.hussain.demo.service;
 
+import com.hussain.demo.model.ERole;
 import com.hussain.demo.model.User;
 import com.hussain.demo.repository.UserRepository;
 import com.hussain.demo.utils.UserSpecification;
@@ -35,18 +36,17 @@ public class UserService {
     @Transactional
     public List<User> getUsers() {
         String username = "hussein1";
-        Map<String, String> searchParams = new HashMap<>();
+        Map<String, Object> searchParams = new HashMap<>();
         searchParams.put("username", username);
+        searchParams.put("role" , ERole.ROLE_USER );
         Specification<User> userSpecification = getUserSpecification(searchParams);
         List<User> usersList = userRepository.findAll(userSpecification);
         usersList.forEach(System.out::println);
         return usersList;
     }
 
-    private Specification<User> getUserSpecification(Map<String, String> searchParams) {
-        if (searchParams.containsKey("username"))
-            return new UserSpecification(searchParams.get("username"));
-        return null;
+    private Specification<User> getUserSpecification(Map<String, Object> searchParams) {
+        return new UserSpecification(searchParams);
     }
 
 
