@@ -34,7 +34,7 @@ public class UserSpecification implements Specification <User> {
         Join<User , Role> userWithRolesJoin =  root.join(("roles")) ;
 
         if (searchParams.get("username") != null)
-            predicateList.add(cb.equal(root.get("username"), searchParams.get("username").toString()));
+            predicateList.add(cb.like(root.get("username"), "%" + searchParams.get("username").toString() + "%"));
         if (searchParams.get("email") != null)
             predicateList.add(cb.equal(root.get("email"), searchParams.get("email")));
         if (searchParams.get("role") != null)

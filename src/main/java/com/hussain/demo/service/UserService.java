@@ -25,22 +25,22 @@ public class UserService {
 
     @Transactional
     public Page<User> getAllUsers() {
-        Map<String, String> searchParams = new HashMap<>();
         int page = 0;
         int size = 3;
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
+        Pageable pageable = PageRequest.of(page, size, Sort.by("email"));
         Page<User> usersPage = userRepository.findAll(pageable);
         return usersPage;
     }
 
     @Transactional
-    public List<User> getUsers() {
-        String username = "hussein1";
+    public Page<User> getUsers() {
+        Pageable pageable = PageRequest.of(0, 3, Sort.by("roles_name"));
+        String username = "huss";
         Map<String, Object> searchParams = new HashMap<>();
         searchParams.put("username", username);
         searchParams.put("role" , ERole.ROLE_USER );
         Specification<User> userSpecification = getUserSpecification(searchParams);
-        List<User> usersList = userRepository.findAll(userSpecification);
+        Page<User> usersList = userRepository.findAll(userSpecification , pageable);
         usersList.forEach(System.out::println);
         return usersList;
     }
