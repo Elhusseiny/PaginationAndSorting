@@ -20,6 +20,6 @@ public class JpaSpecificationApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //userService.getAllUsers();
         //userService.getUsers();
-        userService.getUsersDTOs();
+        userService.getUsersDTOs().forEach(System.out::println);
     }
 }

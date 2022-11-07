@@ -53,11 +53,11 @@ public class UserService {
 
     @Transactional
     public Page<UserResponseDTO> getUsersDTOs() {
-        Pageable pageable = PageRequest.of(0, 3, Sort.by("roles_name").descending());
+        Pageable pageable = PageRequest.of(0, 4, Sort.by("roles_name").descending());
+        //Pageable pageable = PageRequest.of(0, 4, Sort.by("id").descending());
         String username = "huss";
         Map<String, Object> searchParams = new HashMap<>();
         searchParams.put("username", username);
-        searchParams.put("role" , ERole.ROLE_USER );
         Specification<User> userSpecification = getUserSpecification(searchParams);
         Page<UserResponseDTO> usersDtoList = userRepository.findAll(userSpecification , pageable).map(mapper::toUserResponse);
 

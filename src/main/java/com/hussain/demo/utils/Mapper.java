@@ -18,6 +18,7 @@ public class Mapper {
         UserResponseDTO userResponseDTO = new UserResponseDTO();
         userResponseDTO.setUsername(user.getUsername());
         userResponseDTO.setEmail(user.getEmail());
+        userResponseDTO.setTitle(user.getTitle());
         List<String> roles = new ArrayList<>();
         for (Role role : user.getRoles())
         {

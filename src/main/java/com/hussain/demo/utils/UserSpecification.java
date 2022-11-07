@@ -30,11 +30,11 @@ public class UserSpecification implements Specification <User> {
     @Override
     public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicateList = new ArrayList<>();
-
         if (searchParams.get("username") != null)
             predicateList.add(cb.like(root.get("username"), "%" + searchParams.get("username").toString() + "%"));
         if (searchParams.get("email") != null)
             predicateList.add(cb.equal(root.get("email"), searchParams.get("email")));
+        //query.distinct(true); will break the code.
 
         return cb.and(predicateList.toArray(new Predicate[0]));
     }
